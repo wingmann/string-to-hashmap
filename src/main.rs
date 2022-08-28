@@ -30,7 +30,7 @@ fn get_filtered_lines(row_string: &String) -> Vec<String> {
         .into_iter()
         .filter(|l| l.contains(":"))
     {
-        lines.push(line.trim().to_string());
+        lines.push(line.to_string());
     }
     lines
 }
@@ -40,10 +40,10 @@ fn get_hashmap_from(lines: &mut Vec<String>) -> HashMap<String, String> {
 
     for line in lines.iter() {
         let pair: Vec<&str> = line.split(":").collect();
-
-        if let (Some(key), Some(value)) = (pair.get(0), pair.get(1)) {
-            hashmap.insert(key.trim().to_string(), value.trim().to_string());
-        }
+        hashmap.insert(
+            pair.get(0).unwrap().trim().to_string(),
+            pair.get(1).unwrap().trim().to_string(),
+        );
     }
     hashmap
 }
