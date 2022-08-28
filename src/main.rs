@@ -41,16 +41,9 @@ fn get_hashmap_from(lines: &mut Vec<String>) -> HashMap<String, String> {
     for line in lines.iter() {
         let pair: Vec<&str> = line.split(":").collect();
 
-        hashmap.insert(
-            match pair.get(0) {
-                Some(key) => key.trim(),
-                None => "",
-            }.to_string(),
-            match pair.get(1) {
-                Some(value) => value.trim(),
-                None => "",
-            }.to_string(),
-        );
+        if let (Some(key), Some(value)) = (pair.get(0), pair.get(1)) {
+            hashmap.insert(key.trim().to_string(), value.trim().to_string());
+        }
     }
     hashmap
 }
