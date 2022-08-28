@@ -36,20 +36,20 @@ fn get_filtered_lines(row_string: &String) -> Vec<String> {
 }
 
 fn get_hashmap_from(lines: &mut Vec<String>) -> HashMap<String, String> {
-    let mut hashmap = HashMap::<String, String>::new();
+    let mut hashmap = HashMap::new();
 
     for line in lines.iter() {
         let pair: Vec<&str> = line.split(":").collect();
 
         hashmap.insert(
             match pair.get(0) {
-                Some(key) => key.trim().to_string(),
-                None => "".to_string(),
-            },
+                Some(key) => key.trim(),
+                None => "",
+            }.to_string(),
             match pair.get(1) {
-                Some(value) => value.trim().to_string(),
-                None => "".to_string(),
-            },
+                Some(value) => value.trim(),
+                None => "",
+            }.to_string(),
         );
     }
     hashmap
