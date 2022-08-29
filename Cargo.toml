@@ -1,5 +1,5 @@
 [package]
-name = "string-to-hashmap"
+name = "string_to_hashmap"
 version = "0.1.0"
 edition = "2021"
 authors = ["Alexander Shavrov <alexander.shavrov@outlook.com>"]

@@ -1,23 +1,6 @@
 use std::collections::HashMap;
 
-fn main() {
-    let row_string = r#"
-        // Comment here
-        key: value
-
-        key2: value2
-        // Another comment
-        key3: value3
-        "#;
-
-    let hashmap = translate_to_hashmap(row_string.to_string()).unwrap();
-
-    for (key, value) in hashmap.iter() {
-        println!("{}: {}", key, value);
-    }
-}
-
-fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String>> {
+pub fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String>> {
     let lines = filter_lines(&row_string);
     let mut hashmap = HashMap::new();
 
@@ -45,4 +28,26 @@ fn filter_lines(row_string: &String) -> Vec<String> {
         lines.push(line.to_string());
     }
     lines
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn common() {
+        let row_string = r#"
+            // Comment here
+            key: value
+
+            key2: value2
+            // Another comment
+            key3: value3
+        "#;
+        let hashmap = translate_to_hashmap(row_string.to_string()).unwrap();
+
+        assert_eq!(hashmap.get("key").unwrap(), "value");
+        assert_eq!(hashmap.get("key2").unwrap(), "value2");
+        assert_eq!(hashmap.get("key3").unwrap(), "value3");
+    }
 }
