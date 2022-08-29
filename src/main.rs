@@ -10,19 +10,31 @@ fn main() {
         key3: value3
         "#;
 
-    let hashmap = translate_to_hashmap(row_string.to_string());
+    let hashmap = translate_to_hashmap(row_string.to_string()).unwrap();
 
     for (key, value) in hashmap.iter() {
         println!("{}: {}", key, value);
     }
 }
 
-fn translate_to_hashmap(row_string: String) -> HashMap<String, String> {
-    let mut lines = get_filtered_lines(&row_string);
-    get_hashmap_from(&mut lines)
+fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String>> {
+    let lines = filter_lines(&row_string);
+    let mut hashmap = HashMap::new();
+
+    for line in lines.iter() {
+        let pair: Vec<&str> = line.split(":").collect();
+        if pair.len() > 2 {
+            return None;
+        }
+        hashmap.insert(
+            pair.get(0).unwrap().trim().to_string(),
+            pair.get(1).unwrap().trim().to_string(),
+        );
+    }
+    Some(hashmap)
 }
 
-fn get_filtered_lines(row_string: &String) -> Vec<String> {
+fn filter_lines(row_string: &String) -> Vec<String> {
     let mut lines = vec![];
 
     for line in row_string
@@ -33,17 +45,4 @@ fn get_filtered_lines(row_string: &String) -> Vec<String> {
         lines.push(line.to_string());
     }
     lines
-}
-
-fn get_hashmap_from(lines: &mut Vec<String>) -> HashMap<String, String> {
-    let mut hashmap = HashMap::new();
-
-    for line in lines.iter() {
-        let pair: Vec<&str> = line.split(":").collect();
-        hashmap.insert(
-            pair.get(0).unwrap().trim().to_string(),
-            pair.get(1).unwrap().trim().to_string(),
-        );
-    }
-    hashmap
 }
