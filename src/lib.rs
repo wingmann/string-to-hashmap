@@ -1,7 +1,17 @@
 use std::collections::HashMap;
 
 pub fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String>> {
-    let lines = filter_lines(&row_string);
+    // Filtered lines
+    let mut lines = vec![];
+
+    for line in row_string
+        .split("\n")
+        .into_iter()
+        .filter(|l| l.contains(":"))
+    {
+        lines.push(line.to_string());
+    }
+
     let mut hashmap = HashMap::new();
 
     for line in lines.iter() {
@@ -15,19 +25,6 @@ pub fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String
         );
     }
     Some(hashmap)
-}
-
-fn filter_lines(row_string: &String) -> Vec<String> {
-    let mut lines = vec![];
-
-    for line in row_string
-        .split("\n")
-        .into_iter()
-        .filter(|l| l.contains(":"))
-    {
-        lines.push(line.to_string());
-    }
-    lines
 }
 
 #[cfg(test)]
