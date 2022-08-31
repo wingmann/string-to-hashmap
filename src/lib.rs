@@ -1,22 +1,16 @@
 use std::collections::HashMap;
 
 pub fn translate_to_hashmap(row_string: String) -> Option<HashMap<String, String>> {
-    // Filtered lines
-    let mut lines = vec![];
+    let mut hashmap = HashMap::new();
 
     for line in row_string
         .split("\n")
         .into_iter()
         .filter(|l| l.contains(":"))
+        .into_iter()
     {
-        lines.push(line.to_string());
-    }
-
-    let mut hashmap = HashMap::new();
-
-    for line in lines.iter() {
         let pair: Vec<&str> = line.split(":").collect();
-        if pair.len() > 2 {
+        if pair.len() != 2 {
             return None;
         }
         hashmap.insert(
@@ -36,7 +30,6 @@ mod tests {
         let row_string = r#"
             // Comment here
             key: value
-
             key2: value2
             // Another comment
             key3: value3
